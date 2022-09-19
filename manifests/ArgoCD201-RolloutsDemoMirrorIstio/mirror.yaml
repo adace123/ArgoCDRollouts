@@ -68,6 +68,13 @@ spec:
             name: istio-host-split-vsvc
             routes:
               - primary
+      analysis:
+        templates:
+          - templateName: success-rate
+        startingStep: 1
+        args:
+          - name: service-name
+            value: istio-host-split-canary
       steps:
         - setCanaryScale:
             weight: 50
@@ -75,10 +82,10 @@ spec:
             name: mirror-route
             percentage: 50
             match:
-            - method:
-                exact: POST
-              path:
-                prefix: /color
+              - method:
+                  exact: POST
+                path:
+                  prefix: /color
         - pause: {}
   selector:
     matchLabels:
@@ -101,7 +108,6 @@ spec:
               cpu: 5m
 
 ---
-
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -116,4 +122,3 @@ spec:
         protocol: HTTP
       hosts:
         - "*"
-
